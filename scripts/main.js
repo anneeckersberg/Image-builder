@@ -1,3 +1,10 @@
+
+/* Image builder - build you own image, drag and drop rectangles,
+dblclick for new rectangles, press any key for new background color,
+and refresh to start over*/
+
+
+
 function shape(x, y, w, h, fill) {
   this.x = x || 0;
   this.y = y || 0;
@@ -11,13 +18,10 @@ shape.prototype.draw = function(ctx) {
   ctx.fillRect(this.x, this.y, this.w, this.h);
 }
 
-//mouse in shape
 shape.prototype.contains = function(mx, my) {
   return (this.x <= mx) && (this.x + this.w >= mx) &&
          (this.y <= my) && (this.y + this.h >= my);
 }
-
-
 
 function canvasState() {
   this.canvas = canvas;
@@ -85,11 +89,12 @@ function canvasState() {
   this.interval = 30;
   setInterval(function() { myState.draw(); }, myState.interval);
 
+  var colors = ['rgb(0, 0, 255)', 'rgb(169,169,169)', 'rgb(255, 255, 0)', 'rgb(255, 0, 0)'];
+  var i = 0;
   window.addEventListener('keypress', function(e) {
-    var colors = ['rgb(0, 0, 255)', 'rgb(169,169,169)', 'rgb(255, 255, 0)', 'rgb(255, 0, 0)'];
-    canvas.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    i = (i + 1) % colors.length;
+    canvas.style.backgroundColor = colors[i];
   }, true);
-
 }
 
 canvasState.prototype.addShape = function(shape) {
@@ -106,7 +111,7 @@ canvasState.prototype.draw = function() {
     var ctx = this.ctx;
     var shapes = this.shapes;
     this.clear();
-  //enter more shapes if needed here
+
   var l = shapes.length;
   for (var i = 0; i < l; i++) {
     var shape = shapes[i];
